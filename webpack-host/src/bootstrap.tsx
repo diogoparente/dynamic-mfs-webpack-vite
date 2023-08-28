@@ -2,15 +2,15 @@ import { createRoot } from "react-dom/client";
 import React from "react";
 
 import "./index.css";
-// import { BrowserRouter, NavLink, Route, Routes } from "react-router-dom";
 import { MicrofrontendProvider } from "./context/micro-frontends.context";
+import { BrowserRouter, NavLink, Routes, Route } from "react-router-dom";
 import Microfrontend from "./components/micro-frontend";
 
-// const Link = ({ to }: { to: string }) => (
-//   <NavLink to={to} style={{ margin: "1rem" }}>
-//     <button>{to}</button>
-//   </NavLink>
-// );
+const Link = ({ to }: { to: string }) => (
+  <NavLink to={to} style={{ margin: "1rem" }}>
+    <button>{to}</button>
+  </NavLink>
+);
 
 const container = document.getElementById("app");
 
@@ -29,16 +29,8 @@ root.render(
       },
     }}
   >
-    <div className="host">
-      <Microfrontend microId="remote" />
-      {/* <BrowserRouter>
-        <div style={{ marginBottom: "1rem" }}>
-          <h1 style={{ marginBottom: "1rem" }}>Hello, I'm the host app!</h1>
-          <Link to="/remote" />
-          <Link to="/remote/nested-page" />
-          <Link to="/remote/dynamic" />
-          <Link to="/remote/dynamic/1" />
-        </div>
+    <BrowserRouter>
+      <div className="host">
         <Routes>
           <Route path="/" element={<div>home page container</div>} />
           <Route
@@ -46,7 +38,12 @@ root.render(
             element={<Microfrontend microId="remote" />}
           />
         </Routes>
-      </BrowserRouter> */}
-    </div>
+        <div style={{ marginBottom: "1rem" }}>
+          <h1 style={{ marginBottom: "1rem" }}>Hello, I'm the host app!</h1>
+          <Link to="/remote" />
+          <Link to="/remote/nested" />
+        </div>
+      </div>
+    </BrowserRouter>
   </MicrofrontendProvider>
 );

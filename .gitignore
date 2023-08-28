@@ -1,0 +1,2 @@
+webpack-host/public/*
+!webpack-host/public/remote.umd.js

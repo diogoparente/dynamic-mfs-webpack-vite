@@ -1,9 +1,16 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import App from './App'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import routes from './App'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <App />
+    <BrowserRouter>
+      <Routes>
+        {routes.map((route) => (
+          <Route key={route.path} path={route.path} element={<route.Element />} />
+        ))}
+      </Routes>
+    </BrowserRouter>
   </React.StrictMode>,
 )

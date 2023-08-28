@@ -1,2 +1,2 @@
-import * as lib from './components';
-export default lib;
+import * as App from './App';
+export default App;

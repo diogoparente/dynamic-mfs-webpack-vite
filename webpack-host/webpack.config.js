@@ -1,5 +1,5 @@
 const path = require("path");
-const HtmlWebPackPlugin = require("html-webpack-plugin");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 const ModuleFederationPlugin = require("webpack/lib/container/ModuleFederationPlugin");
 const DotenvPlugin = require("dotenv-webpack");
 
@@ -11,10 +11,6 @@ module.exports = {
     path: path.join(__dirname, "/dist"),
     filename: "bundle.js",
     libraryTarget: "umd",
-  },
-  externals: {
-    react: "React",
-    "react-dom": "ReactDOM",
   },
   resolve: {
     extensions: [".js", ".jsx", ".ts", ".tsx", ".json"],
@@ -44,6 +40,10 @@ module.exports = {
       },
     ],
   },
+  externals: {
+    react: "React",
+    "react-dom": "ReactDOM",
+  },
   plugins: [
     new DotenvPlugin(),
     new ModuleFederationPlugin({
@@ -55,15 +55,17 @@ module.exports = {
         ...deps,
         react: {
           singleton: true,
+          eager: true,
           requiredVersion: deps.react,
         },
         "react-dom": {
           singleton: true,
+          eager: true,
           requiredVersion: deps["react-dom"],
         },
       },
     }),
-    new HtmlWebPackPlugin({
+    new HtmlWebpackPlugin({
       template: "./src/index.html",
     }),
   ],

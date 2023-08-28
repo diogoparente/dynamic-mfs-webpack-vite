@@ -1,5 +1,6 @@
-import React from "react";
+import React, { Suspense } from "react";
 import script from "scriptjs";
+import { Route, Routes, useLocation } from "react-router-dom";
 
 export interface ModuleProps {
   scope: string;
@@ -7,43 +8,50 @@ export interface ModuleProps {
   props?: any;
 }
 
-const URL = "http://localhost:3000/remote.umd.js";
+const URL = "http://localhost:3000/remote.umd.js"; // Modify as needed
 
-const ModuleLoader = ({ version, scope, props }: ModuleProps) => {
-  const [Component, setComponent] = React.useState<any>();
+const ModuleLoader = ({ scope, props }: ModuleProps) => {
+  const { pathname } = useLocation();
+
+  const [Module, setModule] = React.useState<any>();
   const [error, setError] = React.useState<string | null>("");
-
-  // const URL => use version, and scope to mount the new url where the UMD is
-  // Created a local bundle just for sake of simplicity
 
   React.useEffect(() => {
     script(URL, () => {
       const target = window[scope];
       if (target) {
-        // loaded OK
-        setComponent(target);
+        setModule(target);
         setError(null);
       } else {
-        // loaded fail
-        setError(`Cannot load component ${scope} at ${URL}`);
-        setComponent(null);
+        setError(`Cannot load module ${scope} at ${URL}`);
+        setModule(null);
       }
     });
   }, [scope]);
 
   if (error) {
     return <div>{error}</div>;
-  } else {
-    if (Component?.default) {
-      const DynamicRemote = Component.default;
-      const someProps = { message: "I'm a custom message" };
-      return <DynamicRemote {...someProps} />;
-    } else return null;
   }
+
+  if (Module) {
+    if (Module.default) {
+      const { path, Element } = Module.default.find(
+        ({ path }: { Element: any; path: string }) => path === pathname
+      );
+      const Microfrontend = () => <Element {...props} />;
+      return <Microfrontend />;
+    }
+  }
+
+  return null;
 };
 
-const useDynamicComponent = (remote: ModuleProps) => (
-  <ModuleLoader {...remote} />
-);
+const useDynamicComponent = (props: ModuleProps) => {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <ModuleLoader {...props} />
+    </Suspense>
+  );
+};
 
 export default useDynamicComponent;

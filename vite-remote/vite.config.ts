@@ -8,7 +8,7 @@ import { name } from './package.json'
 const app = async (): Promise<UserConfigExport> => {
   return defineConfig({
     define: {
-      'process.env': process.env,
+      'process.env': "'process.env'",
     },
     plugins: [
       react(),
@@ -20,7 +20,7 @@ const app = async (): Promise<UserConfigExport> => {
       outDir: '../webpack-host/public/',
       emptyOutDir: true,
       lib: {
-        entry: path.resolve(__dirname, 'src/lib/index.ts'),
+        entry: path.resolve(__dirname, 'src/index.ts'),
         name,
         formats: ['umd'],
         fileName: (format) => `${name}.${format}.js`,
