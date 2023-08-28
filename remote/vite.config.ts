@@ -17,7 +17,7 @@ const app = async (): Promise<UserConfigExport> => {
       }),
     ],
     build: {
-      outDir: '../webpack-host/public/',
+      outDir: '../host/public/',
       emptyOutDir: true,
       lib: {
         entry: path.resolve(__dirname, 'src/index.ts'),

@@ -35,7 +35,9 @@ const useModule = ({ scope }: Pick<ModuleProps, "scope">) => {
 const MicroFrontend = ({ module, props }: { module: any; props: any }) => {
   const { pathname } = useLocation();
 
-  const { Element } = module.default.find(
+  const remoteRoutes = module.default;
+
+  const { Element } = remoteRoutes.find(
     ({ path }: { Element: any; path: string }) => path === pathname
   );
   const TargetMicroFrontend = () => <Element {...props} />;
@@ -49,11 +51,9 @@ const ModuleLoader = ({ scope, props }: ModuleProps) => {
     return <div>{error}</div>;
   }
 
-  if (module?.default) {
-    return <MicroFrontend module={module} props={props} />;
-  }
-
-  return null;
+  return module?.default ? (
+    <MicroFrontend module={module} props={props} />
+  ) : null;
 };
 
 const useDynamicComponent = (props: ModuleProps) => {
@@ -66,8 +66,10 @@ const useDynamicComponent = (props: ModuleProps) => {
 
 const Microfrontend = ({ microId = "remote" }: { microId: string }) => {
   const microfrontend = useMicrofrontend({ id: microId });
-  const scope = microfrontend.scope;
-  const version = microfrontend.version;
+  if (!microfrontend) {
+    return null;
+  }
+  const { version, scope } = microfrontend;
 
   const props = { message: "Heyooo from the host" };
 

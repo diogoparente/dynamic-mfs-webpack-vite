@@ -10,10 +10,10 @@ This repository demonstrates how to dynamically consume Vite remote applications
 
 ### Installation and Setup
 
-#### 1. Navigate to `vite-remote`
+#### 1. Navigate to `remote`
 
 ```bash
-cd vite-remote
+cd remote
 ```
 
 #### 2. Install dependencies and build
@@ -23,12 +23,12 @@ npm install
 npm run build
 ```
 
-After this step, you should find a `remote.umd.js` file inside the `/webpack-host/public` directory.
+After this step, you should find a `remote.umd.js` file inside the `/host/public` directory.
 
-#### 3. Navigate to `webpack-host`
+#### 3. Navigate to `host`
 
 ```bash
-cd ../webpack-host
+cd ../host
 ```
 
 #### 4. Install dependencies and start the host
